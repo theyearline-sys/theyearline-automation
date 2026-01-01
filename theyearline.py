@@ -2,31 +2,32 @@ from datetime import datetime
 import pytz
 from PIL import Image, ImageDraw, ImageFont
 
-def year_progress(now):
-    year = now.year
-    start = datetime(year, 1, 1, tzinfo=now.tzinfo)
-    end = datetime(year + 1, 1, 1, tzinfo=now.tzinfo)
-    return (now - start).total_seconds() / (end - start).total_seconds()
-
 def render_image(progress, year, out_path="theyearline.png"):
-    WIDTH, HEIGHT = 1200, 630
-    img = Image.new("RGB", (WIDTH, HEIGHT), (255, 255, 0))  # yellow background
-    d = ImageDraw.Draw(img)
+    # Image size and colors
+    width, height = 800, 200
+    bg_color = (20, 20, 20)  # dark gray
+    bar_color = (0, 200, 255)  # cyan-blue
+    text_color = (255, 255, 255)
 
-    # Title
-    d.text((50, 50), f"TheYearLine — {year}", fill=(0,0,0), font=ImageFont.load_default())
-    d.text((50, 100), "By 365Pulse", fill=(0,0,0), font=ImageFont.load_default())
+    # Create image
+    img = Image.new("RGB", (width, height), bg_color)
+    draw = ImageDraw.Draw(img)
+
+    # Fonts
+    font_large = ImageFont.truetype("arial.ttf", 48)
+    font_small = ImageFont.truetype("arial.ttf", 32)
+
+    # Labels
+    draw.text((50, 50), "Year Progress", font=font_large, fill=text_color)
+    pct_text = f"{round(progress * 100, 2)}%"
+    draw.text((600, 50), pct_text, font=font_large, fill=text_color)
 
     # Progress bar
-    bar_top = HEIGHT // 2
-    bar_width = WIDTH - 100
-    bar_height = 40
-    d.rectangle([50, bar_top, 50 + bar_width, bar_top + bar_height], fill=(200,200,200))
-    d.rectangle([50, bar_top, 50 + int(bar_width * progress), bar_top + bar_height], fill=(0,0,0))
+    bar_x, bar_y = 50, 130
+    bar_width, bar_height = 700, 20
+    draw.rectangle([bar_x, bar_y, bar_x + bar_width, bar_y + bar_height], fill=(50, 50, 50))
+    draw.rectangle([bar_x, bar_y, bar_x + int(bar_width * progress), bar_y + bar_height], fill=bar_color)
 
-    # Percent text
-    pct = round(progress * 100, 1)
-    d.text((50, bar_top + 60), f"{year} is {pct}% complete", fill=(0,0,0), font=ImageFont.load_default())
-
+    # Save
     img.save(out_path)
     return out_path
