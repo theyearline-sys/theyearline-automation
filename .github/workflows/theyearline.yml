@@ -1,0 +1,31 @@
+name: TheYearLine Daily Post
+
+on:
+  schedule:
+    - cron: "30 4 * * *"  # Runs daily at 04:30 UTC = 10:00 AM IST
+  workflow_dispatch:       # Allows you to run manually from the Actions tab
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install pillow pytz tweepy
+
+      - name: Run poster
+        env:
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+        run: |
+          python post_to_x.py
