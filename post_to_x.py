@@ -1,7 +1,7 @@
+import pytz
 import os
 import tweepy
 from datetime import datetime
-import pytz
 from theyearline import year_progress, render_image
 
 API_KEY = os.environ["X_API_KEY"]
