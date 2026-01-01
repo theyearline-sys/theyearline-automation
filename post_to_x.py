@@ -21,6 +21,13 @@ if __name__ == "__main__":
     text = f"{now.year} is {pct}% complete — TheYearLine • By 365Pulse"
     img_path = render_image(p, now.year)
 
+    import os
+
+    print(f"Image path: {img_path}")
+    print(f"Exists: {os.path.exists(img_path)}")
+    print(f"Size: {os.path.getsize(img_path)} bytes")
+
+
     api = client()
     media = api.media_upload(img_path)
     api.update_status(status=text, media_ids=[media.media_id])
