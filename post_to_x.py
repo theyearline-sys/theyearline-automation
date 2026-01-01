@@ -1,3 +1,4 @@
+import os
 import tweepy
 
 API_KEY = os.environ["X_API_KEY"]
