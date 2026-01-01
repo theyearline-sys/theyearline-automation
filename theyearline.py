@@ -8,7 +8,7 @@ def year_progress(now):
     end = datetime(year + 1, 1, 1, tzinfo=now.tzinfo)
     return (now - start).total_seconds() / (end - start).total_seconds()
 
-def render_image(progress, year, out_path="/home/runner/work/theyearline-automation/theyearline-automation/theyearline.png"):
+def render_image(progress, year, out_path="theyearline.png"):
     WIDTH, HEIGHT = 1200, 630
     img = Image.new("RGB", (WIDTH, HEIGHT), (255, 255, 0))  # yellow background
     d = ImageDraw.Draw(img)
